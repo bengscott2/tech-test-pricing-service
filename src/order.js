@@ -1,35 +1,39 @@
-Item = require('./item')
+const Item = require('./item')
 
 module.exports = class Order {
 
   constructor(orderId){
     this.orderId = orderId
     this.orderItems = []
+    this.totalPrice = 0
+    this.totalVat = 0
   }
 
   addItems(items) {
-    this.orerItems = items.map(function (item) {
-      new Item(item.product_id, item.quantity).calculateCost(currency)
-    })
-    return this.items
-  }
-
-  calculateCost(currency) {
-    this.items.forEach(function (item) {
-      item.calculateCost(currency)
+    items.forEach( (item, index) => {
+      this.orderItems.push(new Item (item.product_id, item.quantity))
     })
     return this.items
   }
 
   printOrder() {
-    var orderTotal = items.map((item) => item.totalPrice)).reduce((a, b) => a + b , 0)
-
-    var returnItems = items.map((item) => {
+    this.totalPrice = this.orderItems.map((item) => item.totalPrice).reduce((a, b) => a + b , 0)
+    this.totalVat = this.orderItems.map((item) => Math.round(item.totalVat)).reduce((a, b) => a + b, 0)
+    let returnItems = this.orderItems.map( item => (
+      {
       product_id: item.productId,
-      item_price: item.price,
-      item_vat: item.itemVat,
       quantity: item.quantity,
-      total_price: item.totalPrice})
-    return {order_id: this.orderId, total_price: orderTotal, items: returnItems}
+      item_total_price: item.totalPrice,
+      item_total_vat: item.totalVat
+      }
+      ))
+    return {
+      "order": {
+        "id": this.orderId,
+        "total_price": this.totalPrice,
+        "total_vat": this.totalVat,
+        "items": returnItems
+      }
+    }
   }
 }
