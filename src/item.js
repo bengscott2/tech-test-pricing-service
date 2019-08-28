@@ -36,12 +36,7 @@ module.exports = class Item {
   }
 
   setTotalVat() {
-    let totalVat
-    if (this.vatMultiplier > 0) {
-      totalVat = this.totalPrice * this.vatMultiplier
-    } else {
-      totalVat = 0
-    }
+    let totalVat = this.totalPrice * this.vatMultiplier
     return Math.round(totalVat)
   }
 

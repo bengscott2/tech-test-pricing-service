@@ -18,7 +18,7 @@ module.exports = class Order {
 
   printOrder() {
     this.totalPrice = this.orderItems.map((item) => item.totalPrice).reduce((a, b) => a + b , 0)
-    this.totalVat = this.orderItems.map((item) => Math.round(item.totalVat)).reduce((a, b) => a + b, 0)
+    this.totalVat = this.orderItems.map((item) => item.totalVat).reduce((a, b) => a + b, 0)
     let returnItems = this.orderItems.map( item => (
       {
       product_id: item.productId,
